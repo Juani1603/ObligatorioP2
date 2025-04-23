@@ -33,6 +33,11 @@
             }
         }
 
+         public bool IniciarSesion(string correo, string contrasena)
+       {
+           return correo == _correo && contrasena == _contrasena;
+       }
+
         public override bool Equals(object? obj)
         {
             bool sonIguales = false;
