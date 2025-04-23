@@ -8,7 +8,6 @@ namespace ObligatorioP2
 
         static void Main(string[] args)
         {
-            sistema.PrecargaDatos();
             int inputUsuario = -1;
             while (inputUsuario != 0)
             {
