@@ -16,6 +16,7 @@
                 throw new Exception("El campo de apodo no puede estar vacío.");
             }
         }
+        //Método para sumar o restar los puntos según el input del usuario (+ / -)
         public void ModificarPuntos(ClientePremium cliente, int puntos, string inputAdmin)
         {
             switch (inputAdmin)

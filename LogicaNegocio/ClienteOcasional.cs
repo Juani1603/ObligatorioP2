@@ -19,6 +19,7 @@ namespace LogicaNegocio
         public ClienteOcasional(string correo, string contrasena, string documento, string nombre, string nacionalidad)
             : base(correo, contrasena, documento, nombre, nacionalidad)
         {
+            //Determina aleatoriamente si el cliente es elegible
             Random random = new Random();
             _elegibleParaRegalo = random.Next(2) == 0;
         }

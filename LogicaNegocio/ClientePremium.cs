@@ -16,7 +16,6 @@ namespace LogicaNegocio
             set { _puntos = value; }
         }
         
-
         public ClientePremium(string correo, string contrasena, string documento, string nombre, string nacionalidad, int puntos)
             :base(correo, contrasena, documento, nombre, nacionalidad)
         {

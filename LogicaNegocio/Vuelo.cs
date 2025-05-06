@@ -58,6 +58,7 @@ namespace LogicaNegocio
                 }
             }
 
+            //Verificación del formato del código (alfanumérico con 2 letras y entre 1 y 4 números)
             if (contadorLetras >= 3 || contadorLetras <= 1)
             {
                 throw new Exception("El número de vuelo debe contar con 2 letras.");
@@ -91,8 +92,8 @@ namespace LogicaNegocio
             return sonIguales;
         }
 
-        public double 
-            CalcularCostoPorAsiento()
+        //Método para calcular el costo del asiento, para el precio del pasaje
+        public double CalcularCostoPorAsiento()
         {
             double costoAsiento = ((_avion.CostoOperacionKm * _ruta.DistanciaRuta) + (_ruta.AeropuertoSalida.CostoOperacion + _ruta.AeropuertoLlegada.CostoOperacion))
                                     / _avion.CantidadAsientos;

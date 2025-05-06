@@ -151,39 +151,36 @@ namespace LogicaNegocio
 
         private void PrecargaPasajes()
         {
-            //30 Vuelos
-            _vuelos.Add(new Vuelo("AR123", GetRutaPorId(1), GetAvionPorFabricante("Boeing"), DiaSemana.Lunes));
-            _vuelos.Add(new Vuelo("LA45", GetRutaPorId(2), GetAvionPorFabricante("Airbus"), DiaSemana.Martes));
-            _vuelos.Add(new Vuelo("UY1", GetRutaPorId(3), GetAvionPorFabricante("Embraer"), DiaSemana.Miercoles));
-            _vuelos.Add(new Vuelo("BR777", GetRutaPorId(4), GetAvionPorFabricante("Boeing"), DiaSemana.Jueves));
-            _vuelos.Add(new Vuelo("IB200", GetRutaPorId(5), GetAvionPorFabricante("Airbus"), DiaSemana.Viernes));
-            _vuelos.Add(new Vuelo("AA2", GetRutaPorId(6), GetAvionPorFabricante("Boeing"), DiaSemana.Sabado));
-            _vuelos.Add(new Vuelo("UX380", GetRutaPorId(7), GetAvionPorFabricante("Airbus"), DiaSemana.Domingo));
-            _vuelos.Add(new Vuelo("EK99", GetRutaPorId(8), GetAvionPorFabricante("Embraer"), DiaSemana.Lunes));
-            _vuelos.Add(new Vuelo("QF1", GetRutaPorId(9), GetAvionPorFabricante("Boeing"), DiaSemana.Martes));
-            _vuelos.Add(new Vuelo("NZ202", GetRutaPorId(10), GetAvionPorFabricante("Airbus"), DiaSemana.Miercoles));
+            // Precarga de 25 pasajes
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("AR123"), new DateTime(2025, 4, 14), GetClientePorDocumento("12345678"), Equipaje.LIGHT));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("LA45"), new DateTime(2025, 4, 15), GetClientePorDocumento("45678901"), Equipaje.CABINA));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("UY1"), new DateTime(2025, 4, 16), GetClientePorDocumento("78912345"), Equipaje.BODEGA));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("BR777"), new DateTime(2025, 4, 17), GetClientePorDocumento("65478932"), Equipaje.LIGHT));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("IB200"), new DateTime(2025, 4, 18), GetClientePorDocumento("77665544"), Equipaje.CABINA));
 
-            _vuelos.Add(new Vuelo("AF35", GetRutaPorId(11), GetAvionPorFabricante("Boeing"), DiaSemana.Jueves));
-            _vuelos.Add(new Vuelo("LH4", GetRutaPorId(12), GetAvionPorFabricante("Airbus"), DiaSemana.Viernes));
-            _vuelos.Add(new Vuelo("DL310", GetRutaPorId(13), GetAvionPorFabricante("Boeing"), DiaSemana.Sabado));
-            _vuelos.Add(new Vuelo("AV567", GetRutaPorId(14), GetAvionPorFabricante("Embraer"), DiaSemana.Domingo));
-            _vuelos.Add(new Vuelo("TP88", GetRutaPorId(15), GetAvionPorFabricante("Boeing"), DiaSemana.Lunes));
-            _vuelos.Add(new Vuelo("AC500", GetRutaPorId(16), GetAvionPorFabricante("Airbus"), DiaSemana.Martes));
-            _vuelos.Add(new Vuelo("AZ900", GetRutaPorId(17), GetAvionPorFabricante("Embraer"), DiaSemana.Miercoles));
-            _vuelos.Add(new Vuelo("IB20", GetRutaPorId(18), GetAvionPorFabricante("Boeing"), DiaSemana.Jueves));
-            _vuelos.Add(new Vuelo("AF75", GetRutaPorId(19), GetAvionPorFabricante("Airbus"), DiaSemana.Viernes));
-            _vuelos.Add(new Vuelo("LH150", GetRutaPorId(20), GetAvionPorFabricante("Embraer"), DiaSemana.Sabado));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("AA2"), new DateTime(2025, 4, 19), GetClientePorDocumento("11223344"), Equipaje.BODEGA));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("UX380"), new DateTime(2025, 4, 20), GetClientePorDocumento("65478932"), Equipaje.LIGHT));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("EK99"), new DateTime(2025, 4, 21), GetClientePorDocumento("78912345"), Equipaje.CABINA));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("QF1"), new DateTime(2025, 4, 22), GetClientePorDocumento("33442211"), Equipaje.BODEGA));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("NZ202"), new DateTime(2025, 4, 23), GetClientePorDocumento("12345678"), Equipaje.LIGHT));
 
-            _vuelos.Add(new Vuelo("AR10", GetRutaPorId(21), GetAvionPorFabricante("Boeing"), DiaSemana.Domingo));
-            _vuelos.Add(new Vuelo("LA11", GetRutaPorId(22), GetAvionPorFabricante("Airbus"), DiaSemana.Lunes));
-            _vuelos.Add(new Vuelo("UY22", GetRutaPorId(23), GetAvionPorFabricante("Embraer"), DiaSemana.Martes));
-            _vuelos.Add(new Vuelo("BR33", GetRutaPorId(24), GetAvionPorFabricante("Boeing"), DiaSemana.Miercoles));
-            _vuelos.Add(new Vuelo("IB44", GetRutaPorId(25), GetAvionPorFabricante("Airbus"), DiaSemana.Jueves));
-            _vuelos.Add(new Vuelo("AA55", GetRutaPorId(26), GetAvionPorFabricante("Boeing"), DiaSemana.Viernes));
-            _vuelos.Add(new Vuelo("UX66", GetRutaPorId(27), GetAvionPorFabricante("Airbus"), DiaSemana.Sabado));
-            _vuelos.Add(new Vuelo("EK77", GetRutaPorId(28), GetAvionPorFabricante("Embraer"), DiaSemana.Domingo));
-            _vuelos.Add(new Vuelo("QF88", GetRutaPorId(29), GetAvionPorFabricante("Boeing"), DiaSemana.Lunes));
-            _vuelos.Add(new Vuelo("NZ99", GetRutaPorId(30), GetAvionPorFabricante("Airbus"), DiaSemana.Martes));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("AF35"), new DateTime(2025, 4, 24), GetClientePorDocumento("45678901"), Equipaje.CABINA));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("LH4"), new DateTime(2025, 4, 25), GetClientePorDocumento("78912345"), Equipaje.BODEGA));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("DL310"), new DateTime(2025, 4, 26), GetClientePorDocumento("65478932"), Equipaje.LIGHT));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("AV567"), new DateTime(2025, 4, 27), GetClientePorDocumento("44556677"), Equipaje.CABINA));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("TP88"), new DateTime(2025, 4, 28), GetClientePorDocumento("77665544"), Equipaje.BODEGA));
+
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("AC500"), new DateTime(2025, 4, 29), GetClientePorDocumento("32165498"), Equipaje.LIGHT));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("AZ900"), new DateTime(2025, 4, 30), GetClientePorDocumento("11223344"), Equipaje.CABINA));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("IB20"), new DateTime(2025, 5, 1), GetClientePorDocumento("44556677"), Equipaje.BODEGA));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("AF75"), new DateTime(2025, 5, 2), GetClientePorDocumento("99887766"), Equipaje.LIGHT));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("LH150"), new DateTime(2025, 5, 3), GetClientePorDocumento("33442211"), Equipaje.CABINA));
+
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("AR10"), new DateTime(2025, 5, 4), GetClientePorDocumento("45678901"), Equipaje.BODEGA));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("LA11"), new DateTime(2025, 5, 5), GetClientePorDocumento("65478932"), Equipaje.LIGHT));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("UY22"), new DateTime(2025, 5, 6), GetClientePorDocumento("99887766"), Equipaje.CABINA));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("BR33"), new DateTime(2025, 5, 7), GetClientePorDocumento("44556677"), Equipaje.BODEGA));
+            _pasajes.Add(new Pasaje(GetVueloPorNumeroVuelo("IB44"), new DateTime(2025, 5, 8), GetClientePorDocumento("33442211"), Equipaje.LIGHT));
         }
 
         //Método para mostrar clientes
@@ -270,6 +267,7 @@ namespace LogicaNegocio
         public void AltaVuelo(Vuelo vuelo)
         {
             vuelo.Validar();
+            vuelo.VerificarAlcanceVuelo();
             if (!_vuelos.Contains(vuelo))
             {
                 _vuelos.Add(vuelo);
