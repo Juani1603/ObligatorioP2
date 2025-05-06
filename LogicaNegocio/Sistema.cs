@@ -195,8 +195,13 @@ namespace LogicaNegocio
                 {
                     premium.Add(clientePremium);
                 }
-
             }
+
+            if (premium.Count == 0)
+            {
+                throw new Exception("La lista de clientes premium está vacía");
+            }
+
             return premium;
         }
         //Ocasionales
@@ -209,6 +214,10 @@ namespace LogicaNegocio
                 if (usuario is ClienteOcasional clienteOcasional)
                 {
                     ocasionales.Add(clienteOcasional);
+                }
+                if (ocasionales.Count == 0)
+                {
+                    throw new Exception("La lista de clientes ocasionales está vacía");
                 }
             }
             return ocasionales;
@@ -381,6 +390,10 @@ namespace LogicaNegocio
                 {
                     pasajes.Add(pasaje);
                 }
+            }
+            if (pasajes.Count == 0)
+            {
+                throw new Exception("No hay pasajes comprendidos en esas fechas.");
             }
             return pasajes;
         }

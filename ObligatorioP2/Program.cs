@@ -54,17 +54,26 @@ namespace ObligatorioP2
         //Listado de todos los clientes
         static void ListarClientes()
         {
-            Console.WriteLine("Clientes Premium:\n");
-            foreach (ClientePremium cliente in sistema.ClientesPremium())
+            try
             {
-                Console.WriteLine(cliente);
+                Console.WriteLine("Clientes Premium:\n");
+                foreach (ClientePremium cliente in sistema.ClientesPremium())
+                {
+                    Console.WriteLine(cliente);
+                }
+
+                Console.WriteLine("\nClientes Ocasionales:\n");
+                foreach (ClienteOcasional cliente in sistema.ClientesOcasionales())
+                {
+                    Console.WriteLine(cliente);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
             }
 
-            Console.WriteLine("\nClientes Ocasionales:\n");
-            foreach (ClienteOcasional cliente in sistema.ClientesOcasionales())
-            {
-                Console.WriteLine(cliente);
-            }
+
         }
 
         //Consultar vuelos en aeropuerto
@@ -74,15 +83,19 @@ namespace ObligatorioP2
             {
                 Console.WriteLine("Ingrese un codigo de aeropuerto");
                 string codigo = Console.ReadLine().ToUpper();
-                Aeropuerto aeropuerto = sistema.GetAeropuertoPorCodigo(codigo);
-
-                Console.WriteLine("Vuelos en este aeropuerto:");
-                foreach (Vuelo vuelo in sistema.MostrarVuelosEnAeropuerto(aeropuerto))
+                if (!string.IsNullOrEmpty(codigo))
                 {
-                    Console.WriteLine($"Número vuelo: {vuelo.NumeroVuelo}, Modelo del avión: {vuelo.Avion.Modelo}," +
-                                     $" Ruta: {vuelo.Ruta.AeropuertoSalida.CodigoIATA} - {vuelo.Ruta.AeropuertoLlegada.CodigoIATA}," +
-                                     $" Frecuencia: {vuelo.Frecuencia}");
+                    Aeropuerto aeropuerto = sistema.GetAeropuertoPorCodigo(codigo);
+
+                    Console.WriteLine("Vuelos en este aeropuerto:");
+                    foreach (Vuelo vuelo in sistema.MostrarVuelosEnAeropuerto(aeropuerto))
+                    {
+                        Console.WriteLine($"Número vuelo: {vuelo.NumeroVuelo}, Modelo del avión: {vuelo.Avion.Modelo}," +
+                                          $" Ruta: {vuelo.Ruta.AeropuertoSalida.CodigoIATA} - {vuelo.Ruta.AeropuertoLlegada.CodigoIATA}," +
+                                          $" Frecuencia: {vuelo.Frecuencia}");
+                    }
                 }
+
             }
             catch (Exception ex)
             {
@@ -106,9 +119,14 @@ namespace ObligatorioP2
                 Console.WriteLine("Ingrese su nacionalidad:");
                 string nacionalidad = Console.ReadLine();
 
-                ClienteOcasional cliente = new ClienteOcasional(correo, contrasena, documento, nombre, nacionalidad);
-                sistema.AltaClienteOcasional(cliente);
-
+                if (!string.IsNullOrEmpty(correo) && !string.IsNullOrEmpty(contrasena) &&
+                    !string.IsNullOrEmpty(documento) &&
+                    !string.IsNullOrEmpty(nombre) && !string.IsNullOrEmpty(nacionalidad))
+                {
+                    ClienteOcasional cliente = new ClienteOcasional(correo, contrasena, documento, nombre, nacionalidad);
+                    sistema.AltaClienteOcasional(cliente);
+                    Console.WriteLine("¡Alta exitosa!");
+                }
             }
             catch (Exception ex)
             {
@@ -119,20 +137,27 @@ namespace ObligatorioP2
         //Listar pasajes por fechas
         static void ListarPasajesPorFechas()
         {
-            Console.WriteLine("Ingrese la primera fecha: (dd/mm/yyyy)");
-            DateTime.TryParse(Console.ReadLine(), out DateTime fechaDesde);
-            Console.WriteLine("Ingrese la segunda fecha: (dd/mm/yyyy)");
-            DateTime.TryParse(Console.ReadLine(), out DateTime fechaHasta);
-
-            if (fechaDesde.ToString() != null && fechaHasta.ToString() != null)
+            try
             {
-                Console.WriteLine($"Pasajes comprendidos entre las fechas: {fechaDesde.ToShortDateString()} - {fechaHasta.ToShortDateString()}:");
-                foreach (Pasaje pasaje in sistema.PasajesFiltradosPorFecha(fechaDesde, fechaHasta))
+                Console.WriteLine("Ingrese la primera fecha: (dd/mm/yyyy)");
+                DateTime.TryParse(Console.ReadLine(), out DateTime fechaDesde);
+                Console.WriteLine("Ingrese la segunda fecha: (dd/mm/yyyy)");
+                DateTime.TryParse(Console.ReadLine(), out DateTime fechaHasta);
+
+                if (fechaDesde.ToString() != null && fechaHasta.ToString() != null)
                 {
-                    Console.WriteLine(pasaje);
+                    Console.WriteLine(
+                        $"Pasajes comprendidos entre las fechas: {fechaDesde.ToShortDateString()} - {fechaHasta.ToShortDateString()}:");
+                    foreach (Pasaje pasaje in sistema.PasajesFiltradosPorFecha(fechaDesde, fechaHasta))
+                    {
+                        Console.WriteLine(pasaje);
+                    }
                 }
             }
-            
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
 
         }
     }

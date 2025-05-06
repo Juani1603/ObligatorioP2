@@ -36,6 +36,12 @@
                 throw new Exception("El campo de codigo IATA no puede estar vacío.");
 
             }
+
+            if (_codigoIATA.Length != 3)
+            {
+                throw new Exception("El códgio IATA es inválido.");
+            }
+
             if (string.IsNullOrEmpty(_ciudad))
             {
                 throw new Exception("El campo de ciudad no puede estar vacío.");
