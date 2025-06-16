@@ -68,5 +68,10 @@ namespace LogicaNegocio
 
             return sonIguales;
         }
+
+        public double CalcularCostoTasas()
+        {
+            return _aeropuertoLlegada.CostoTasas + _aeropuertoSalida.CostoTasas;
+        }
     }
 }

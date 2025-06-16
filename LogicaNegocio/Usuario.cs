@@ -4,12 +4,26 @@
     {
         private string _correo;
         private string _contrasena;
+        protected string _rol;
 
         public string Correo
         {
             get { return _correo; }
+            set { _correo = value; }
         }
 
+        public string Contrasena
+        {
+            get { return _contrasena; }
+            set { _contrasena = value; }
+        }
+
+        public string Rol
+        {
+            get { return _rol; }
+        }
+
+        public Usuario() { }
         public Usuario(string correo, string contrasena)
         {
             _correo = correo;
@@ -31,13 +45,12 @@
             {
                 throw new Exception("La contraseña no puede estar vacía.");
             }
-        }
 
-        //Método para login de usuarios
-       //  public bool IniciarSesion(string correo, string contrasena)
-       //{
-       //    return correo == _correo && contrasena == _contrasena;
-       //}
+            if (string.IsNullOrEmpty(_rol))
+            {
+                throw new Exception("El rol es obligatorio");
+            }
+        }
 
         public override bool Equals(object? obj)
         {
@@ -49,5 +62,7 @@
             }
             return sonIguales;
         }
+
+        public abstract string DefinirRolUsuario();
     }
 }

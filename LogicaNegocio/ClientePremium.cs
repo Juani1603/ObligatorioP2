@@ -15,7 +15,9 @@ namespace LogicaNegocio
             get { return _puntos; }
             set { _puntos = value; }
         }
-        
+
+        public ClientePremium() : base() { }
+
         public ClientePremium(string correo, string contrasena, string documento, string nombre, string nacionalidad, int puntos)
             :base(correo, contrasena, documento, nombre, nacionalidad)
         {
@@ -30,10 +32,34 @@ namespace LogicaNegocio
                 throw new Exception("El campo de puntos debe ser un valor númerico mayor a cero.");
             }
         }
-
         public override string ToString()
         {
             return base.ToString() + $"Puntos: {_puntos}";
+        }
+
+        public override double ImpuestoPasajePorCliente(Pasaje pasaje)
+        {
+            double porcentaje = 1;
+
+            if (pasaje.Equipaje.Equals(2))
+            {
+                porcentaje = 1.05;
+            }
+            return porcentaje;
+        }
+
+        //Método para sumar o restar los puntos según el input del usuario (+ / -)
+        public void ModificarPuntos(int puntos, string inputAdmin)
+        {
+            switch (inputAdmin)
+            {
+                case "+":
+                    _puntos += puntos;
+                    break;
+                case "-":
+                    _puntos -= puntos;
+                    break;
+            }
         }
     }
 }

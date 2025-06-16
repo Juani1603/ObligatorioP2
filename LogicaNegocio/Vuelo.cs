@@ -11,13 +11,13 @@ namespace LogicaNegocio
 
         public string NumeroVuelo
         {
-            get {  return _numeroVuelo; } 
+            get { return _numeroVuelo; }
         }
 
-            public Ruta Ruta
-            {
-                get { return _ruta; }
-            }
+        public Ruta Ruta
+        {
+            get { return _ruta; }
+        }
 
         public Avion Avion
         {
@@ -110,6 +110,12 @@ namespace LogicaNegocio
             }
 
             return puedeVolar;
+        }
+
+        //Método para calcular las tasas de costo de una ruta
+        public double CalcularTasasRuta()
+        {
+            return _ruta.CalcularCostoTasas();
         }
     }
 }

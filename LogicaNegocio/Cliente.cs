@@ -15,18 +15,29 @@ namespace LogicaNegocio
         public string Documento
         {
             get { return _documento; }  
+            set { _documento = value; } 
         }
 
         public string Nombre
         {
             get { return _nombre; }
+            set { _nombre = value; }
         }
+
+        public string Nacionalidad
+        {
+            get { return _nacionalidad;}
+            set {  _nacionalidad = value;}
+        }
+
+        public Cliente() : base() { }
 
         public Cliente(string correo, string contrasena, string documento, string nombre, string nacionalidad):base(correo, contrasena)
         {
             _documento = documento;
             _nombre = nombre;
             _nacionalidad = nacionalidad;
+            DefinirRolUsuario();
         }
 
         public void Validar()
@@ -50,5 +61,12 @@ namespace LogicaNegocio
         {
             return $"Nombre: {_nombre}, Correo: {Correo}, Nacionalidad: {_nacionalidad}, ";
         }
+
+        public override string DefinirRolUsuario()
+        {
+            return _rol = "Cliente";
+        }
+
+        public abstract double ImpuestoPasajePorCliente(Pasaje pasaje);
     }
 }

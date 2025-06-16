@@ -10,8 +10,9 @@ namespace LogicaNegocio
         private List<Ruta> _rutas = new List<Ruta>();
         private List<Aeropuerto> _aeropuertos = new List<Aeropuerto>();
         private List<Pasaje> _pasajes = new List<Pasaje>();
+        private static Sistema _instancia;
 
-        public Sistema()
+        private Sistema()
         {
             PrecargaUsuarios();
             PrecargaAviones();
@@ -19,6 +20,18 @@ namespace LogicaNegocio
             PrecargaRutas();
             PrecargaVuelos();
             PrecargaPasajes();
+        }
+
+        public static Sistema Instancia
+        {
+            get
+            {
+                if (_instancia == null)
+                {
+                    _instancia = new Sistema();
+                }
+                return _instancia;
+            }
         }
 
         //Precarga de datos
@@ -186,7 +199,7 @@ namespace LogicaNegocio
         //Método para mostrar clientes
         //Premium
         public List<ClientePremium> ClientesPremium()
-            {
+        {
             List<ClientePremium> premium = new List<ClientePremium>();
 
             foreach (Usuario usuario in _usuarios)
@@ -221,34 +234,49 @@ namespace LogicaNegocio
                 }
             }
             return ocasionales;
-            
+
         }
 
         //Alta Usuarios
         public void AltaAdministrador(Administrador admin)
         {
+            admin.DefinirRolUsuario();
             admin.Validar();
             if (!_usuarios.Contains(admin))
             {
                 _usuarios.Add(admin);
             }
+            else
+            {
+                throw new Exception("Ya hay un administrador registrado con ese correo.");
+            }
         }
 
         public void AltaClientePremium(ClientePremium cliente)
         {
+            cliente.DefinirRolUsuario();
             cliente.Validar();
             if (!_usuarios.Contains(cliente))
             {
                 _usuarios.Add(cliente);
             }
+            else
+            {
+                throw new Exception("Ya hay un cliente registrado con ese correo.");
+            }
         }
 
         public void AltaClienteOcasional(ClienteOcasional cliente)
         {
+            cliente.DefinirRolUsuario();
             cliente.Validar();
             if (!_usuarios.Contains(cliente))
             {
                 _usuarios.Add(cliente);
+            }
+            else
+            {
+                throw new Exception("Ya hay un cliente registrado con ese correo.");
             }
         }
         //Alta Aeropuertos
@@ -258,6 +286,9 @@ namespace LogicaNegocio
             if (!_aeropuertos.Contains(aeropuerto))
             {
                 _aeropuertos.Add(aeropuerto);
+            } else
+            {
+                throw new Exception("Ya hay un aeropuerto registrado con ese código IATA.");
             }
         }
 
@@ -268,9 +299,12 @@ namespace LogicaNegocio
             if (!_aviones.Contains(avion))
             {
                 _aviones.Add(avion);
+            } else
+            {
+                throw new Exception("Ya hay un avión registrado con ese fabricante.");
             }
         }
-               
+
 
         //Alta Vuelos
         public void AltaVuelo(Vuelo vuelo)
@@ -280,6 +314,9 @@ namespace LogicaNegocio
             if (!_vuelos.Contains(vuelo))
             {
                 _vuelos.Add(vuelo);
+            } else
+            {
+                throw new Exception("Ya hay un vuelo registrado con ese número.");
             }
         }
         //Alta Rutas
@@ -289,6 +326,9 @@ namespace LogicaNegocio
             if (!_rutas.Contains(ruta))
             {
                 _rutas.Add(ruta);
+            } else
+            {
+                throw new Exception("Ya hay una ruta registrada con ese ID.");
             }
         }
         //Alta Pasajes
@@ -299,6 +339,9 @@ namespace LogicaNegocio
             if (!_pasajes.Contains(pasaje))
             {
                 _pasajes.Add(pasaje);
+            } else
+            {
+                throw new Exception("Ya hay un pasaje registrado con ese ID.");
             }
         }
 
@@ -396,6 +439,24 @@ namespace LogicaNegocio
                 throw new Exception("No hay pasajes comprendidos en esas fechas.");
             }
             return pasajes;
+        }
+
+        public string Login(string correo, string password)
+        {
+            bool existe = false;
+            int i = 0;
+            string rol = "";
+
+            while (i < _usuarios.Count && !existe)
+            {
+                if (_usuarios[i].Correo.Equals(correo) && _usuarios[i].Contrasena.Equals(password))
+                {
+                    existe = true;
+                    rol = _usuarios[i].Rol;
+                }
+                i++;
+            }
+            return rol;
         }
     }
 }

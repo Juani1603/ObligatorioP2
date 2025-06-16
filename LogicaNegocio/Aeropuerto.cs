@@ -57,7 +57,6 @@
 
             }
         }
-
         public override bool Equals(object? obj)
         {
             bool sonIguales = false;
@@ -68,6 +67,5 @@
             }
             return sonIguales;
         }
-
     }
 }

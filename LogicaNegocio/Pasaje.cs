@@ -11,11 +11,18 @@ namespace LogicaNegocio
         private Cliente _pasajero;
         private Equipaje _equipaje;
         private double _precio;
+        private static double _margenGanancia = 1.25;
 
         public DateTime Fecha
         {
             get { return _fecha; }
         }
+
+        public Equipaje Equipaje
+        {
+            get { return _equipaje; }
+        }
+
 
         public Pasaje(Vuelo vuelo, DateTime fecha, Cliente pasajero, Equipaje equipaje)
         {
@@ -26,37 +33,25 @@ namespace LogicaNegocio
             _equipaje = equipaje;
         }
 
-        //Método para calcular precio pasaje
-        //public double CalcularPrecio()
-        //{
-        //    double costoAsiento = _vuelo.CalcularCostoPorAsiento();
-        //    double margenGanancias = 1.25;
-        //    double costoEquipaje = 1;
+        //Métodos para calcular precio pasaje
+        public double CalcularPrecioBasePasaje()
+        {
+            return _vuelo.CalcularCostoPorAsiento() * _margenGanancia;
+        }
 
-        //    if (_pasajero is ClienteOcasional)
-        //    {
-        //        if ((int)_equipaje == 1)
-        //        {
-        //            costoEquipaje = 1.1;
-        //        }
-        //        if ((int)_equipaje == 2)
-        //        {
-        //            costoEquipaje = 1.2;
-        //        }
-        //    }
-           
-        //    if (_pasajero is ClientePremium && (int)_equipaje == 2)
-        //    {
-        //        costoEquipaje = 1.05;
-        //    }
+        public double CalcularImpuestosPasaje()
+        {
+            return _vuelo.CalcularTasasRuta();
+        }
 
-        //    double tasasAeroSalida =  _vuelo.Ruta.AeropuertoSalida.CostoTasas;
-        //    double tasasAeroLlegada = _vuelo.Ruta.AeropuertoLlegada.CostoTasas;
+        public double CalcularPrecioFinal(Pasaje pasaje)
+        {
+            double precio = CalcularPrecioBasePasaje() + CalcularImpuestosPasaje();
 
-        //    double precioPasaje = (costoAsiento * margenGanancias * costoEquipaje) + (tasasAeroSalida + tasasAeroLlegada);
-        //    _precio = Math.Round(precioPasaje, 2);
-        //    return _precio;
-        //}
+            precio *= _pasajero.ImpuestoPasajePorCliente(pasaje);
+
+            return precio;
+        }
 
 
         public bool VerificarFrecuenciaVuelo()
