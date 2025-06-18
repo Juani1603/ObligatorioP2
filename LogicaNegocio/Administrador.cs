@@ -4,11 +4,16 @@
     {
         private string _apodo;
 
-        public Administrador(string correo, string contrasena, string apodo) : base(correo, contrasena)
+        public Administrador(string correo, string contrasena, string rol, string apodo) : base(correo, contrasena, rol)
         {
             _apodo = apodo;
-            DefinirRolUsuario();
         }
+
+        public string Apodo
+        {
+            get {  return _apodo; }
+        }
+
         public void Validar()
         {
             base.Validar();

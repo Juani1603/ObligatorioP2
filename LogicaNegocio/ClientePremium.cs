@@ -18,8 +18,8 @@ namespace LogicaNegocio
 
         public ClientePremium() : base() { }
 
-        public ClientePremium(string correo, string contrasena, string documento, string nombre, string nacionalidad, int puntos)
-            :base(correo, contrasena, documento, nombre, nacionalidad)
+        public ClientePremium(string correo, string contrasena, string rol, string documento, string nombre, string nacionalidad, int puntos)
+            :base(correo, contrasena, rol, documento, nombre, nacionalidad)
         {
             _puntos = puntos;
         }

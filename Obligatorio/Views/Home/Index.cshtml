@@ -1,7 +1,36 @@
-﻿@{
+﻿@using LogicaNegocio;
+@model string
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Obligatorio P2</h1>
+    <span class="alert-success">@TempData["Mensaje"]</span>
+    @{
+        string rol = Context.Session.GetString("rol");
+        string correo = Context.Session.GetString("correo");
+        Usuario usuario = null;
+        string nombreMostrado = "";
+
+        if (rol != null && correo != null)
+        {
+            usuario = Sistema.Instancia.GetUsuarioEnSesion(correo);
+
+            if (usuario is Cliente cliente)
+            {
+                nombreMostrado = cliente.Nombre;
+            }
+            else if(usuario is Administrador admin)
+            {
+                nombreMostrado = admin.Apodo;
+            }
+        }
+    }
+    @if (!string.IsNullOrEmpty(nombreMostrado))
+    {
+        <h2>Bienvenido, @nombreMostrado</h2>
+    }
 </div>
+@ViewBag.Mensaje

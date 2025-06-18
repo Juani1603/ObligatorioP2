@@ -32,12 +32,11 @@ namespace LogicaNegocio
 
         public Cliente() : base() { }
 
-        public Cliente(string correo, string contrasena, string documento, string nombre, string nacionalidad):base(correo, contrasena)
+        public Cliente(string correo, string contrasena, string rol, string documento, string nombre, string nacionalidad):base(correo, contrasena, rol)
         {
             _documento = documento;
             _nombre = nombre;
             _nacionalidad = nacionalidad;
-            DefinirRolUsuario();
         }
 
         public void Validar()

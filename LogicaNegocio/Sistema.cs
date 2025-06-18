@@ -12,6 +12,11 @@ namespace LogicaNegocio
         private List<Pasaje> _pasajes = new List<Pasaje>();
         private static Sistema _instancia;
 
+        public List<Vuelo> Vuelos
+        {
+            get { return _vuelos; }
+        }
+
         private Sistema()
         {
             PrecargaUsuarios();
@@ -38,20 +43,20 @@ namespace LogicaNegocio
         private void PrecargaUsuarios()
         {
             //2 Administradores
-            _usuarios.Add(new Administrador("admin1@correo.com", "pass123", "SuperAdmin"));
-            _usuarios.Add(new Administrador("admin2@correo.com", "clave456", "JefeSistema"));
+            _usuarios.Add(new Administrador("admin1@correo.com", "pass123", "Admin", "SuperAdmin"));
+            _usuarios.Add(new Administrador("admin2@correo.com", "clave456", "Admin", "JefeSistema"));
             //5 Clientes Premium
-            _usuarios.Add(new ClientePremium("luis@gmail.com", "1234", "45678901", "Luis Fernández", "Uruguaya", 1500));
-            _usuarios.Add(new ClientePremium("ana@hotmail.com", "abcd", "12345678", "Ana García", "Argentina", 2300));
-            _usuarios.Add(new ClientePremium("pedro@outlook.com", "qwerty", "78912345", "Pedro Martínez", "Chilena", 900));
-            _usuarios.Add(new ClientePremium("sofia@mail.com", "sofia2025", "32165498", "Sofía López", "Uruguaya", 3100));
-            _usuarios.Add(new ClientePremium("matias@correo.com", "matpass", "65478932", "Matías Castro", "Paraguaya", 200));
+            _usuarios.Add(new ClientePremium("luis@gmail.com", "1234", "Cliente", "45678901", "Luis Fernández", "Uruguaya", 1500));
+            _usuarios.Add(new ClientePremium("ana@hotmail.com", "abcd", "Cliente", "12345678", "Ana García", "Argentina", 2300));
+            _usuarios.Add(new ClientePremium("pedro@outlook.com", "qwerty", "Cliente", "78912345", "Pedro Martínez", "Chilena", 900));
+            _usuarios.Add(new ClientePremium("sofia@mail.com", "sofia2025", "Cliente", "32165498", "Sofía López", "Uruguaya", 3100));
+            _usuarios.Add(new ClientePremium("matias@correo.com", "matpass", "Cliente", "65478932", "Matías Castro", "Paraguaya", 200));
             // 5 Clientes Ocasionales
-            _usuarios.Add(new ClienteOcasional("camila@gmail.com", "cami123", "11223344", "Camila Suárez", "Uruguaya"));
-            _usuarios.Add(new ClienteOcasional("daniel@yahoo.com", "danielito", "99887766", "Daniel Pérez", "Argentina"));
-            _usuarios.Add(new ClienteOcasional("valentina@mail.com", "valen456", "44556677", "Valentina Ríos", "Chilena"));
-            _usuarios.Add(new ClienteOcasional("federico@correo.com", "fede789", "77665544", "Federico Gómez", "Uruguaya"));
-            _usuarios.Add(new ClienteOcasional("julieta@hotmail.com", "julie321", "33442211", "Julieta Fernández", "Boliviana"));
+            _usuarios.Add(new ClienteOcasional("camila@gmail.com", "cami123", "Cliente", "11223344", "Camila Suárez", "Uruguaya"));
+            _usuarios.Add(new ClienteOcasional("daniel@yahoo.com", "danielito", "Cliente", "99887766", "Daniel Pérez", "Argentina"));
+            _usuarios.Add(new ClienteOcasional("valentina@mail.com", "valen456", "Cliente", "44556677", "Valentina Ríos", "Chilena"));
+            _usuarios.Add(new ClienteOcasional("federico@correo.com", "fede789", "Cliente", "77665544", "Federico Gómez", "Uruguaya"));
+            _usuarios.Add(new ClienteOcasional("julieta@hotmail.com", "julie321", "Cliente", "33442211", "Julieta Fernández", "Boliviana"));
         }
 
         private void PrecargaAviones()
@@ -286,7 +291,8 @@ namespace LogicaNegocio
             if (!_aeropuertos.Contains(aeropuerto))
             {
                 _aeropuertos.Add(aeropuerto);
-            } else
+            }
+            else
             {
                 throw new Exception("Ya hay un aeropuerto registrado con ese código IATA.");
             }
@@ -299,7 +305,8 @@ namespace LogicaNegocio
             if (!_aviones.Contains(avion))
             {
                 _aviones.Add(avion);
-            } else
+            }
+            else
             {
                 throw new Exception("Ya hay un avión registrado con ese fabricante.");
             }
@@ -314,7 +321,8 @@ namespace LogicaNegocio
             if (!_vuelos.Contains(vuelo))
             {
                 _vuelos.Add(vuelo);
-            } else
+            }
+            else
             {
                 throw new Exception("Ya hay un vuelo registrado con ese número.");
             }
@@ -326,7 +334,8 @@ namespace LogicaNegocio
             if (!_rutas.Contains(ruta))
             {
                 _rutas.Add(ruta);
-            } else
+            }
+            else
             {
                 throw new Exception("Ya hay una ruta registrada con ese ID.");
             }
@@ -334,67 +343,135 @@ namespace LogicaNegocio
         //Alta Pasajes
         public void AltaPasaje(Pasaje pasaje)
         {
-            pasaje.Validar();
             pasaje.VerificarFrecuenciaVuelo();
+            pasaje.Validar();
             if (!_pasajes.Contains(pasaje))
             {
                 _pasajes.Add(pasaje);
-            } else
+            }
+            else
             {
                 throw new Exception("Ya hay un pasaje registrado con ese ID.");
             }
         }
 
         //Buscar Aeropuerto por código IATA
+        private Aeropuerto BuscarAeropuerto(string codigoIATA)
+        {
+            Aeropuerto aeropuerto = null;
+            int i = 0;
+            while (i < _aeropuertos.Count && aeropuerto == null)
+            {
+                if (_aeropuertos[i].CodigoIATA == codigoIATA)
+                {
+                    aeropuerto = _aeropuertos[i];
+                }
+                i++;
+            }
+            return aeropuerto;
+        }
+
         public Aeropuerto GetAeropuertoPorCodigo(string codigoIATA)
         {
-            foreach (Aeropuerto aeropuerto in _aeropuertos)
+            Aeropuerto aeropuerto = BuscarAeropuerto(codigoIATA);
+
+            if (aeropuerto != null)
             {
-                if (aeropuerto.CodigoIATA == codigoIATA)
-                {
-                    return aeropuerto;
-                }
+                return aeropuerto;
             }
-            throw new Exception($"Aeropuerto con código {codigoIATA} no encontrado.");
+            else
+            {
+                throw new Exception($"Aeropuerto con código {codigoIATA} no encontrado.");
+            }
         }
 
         //Buscar Avión por fabricante
+        private Avion BuscarAvion(string fabricante)
+        {
+            Avion avion = null;
+            int i = 0;
+            while (i < _aviones.Count && avion == null)
+            {
+                if (_aviones[i].Fabricante == fabricante)
+                {
+                    avion = _aviones[i];
+                }
+                i++;
+            }
+            return avion;
+        }
         public Avion GetAvionPorFabricante(string fabricante)
         {
-            foreach (Avion avion in _aviones)
+            Avion avion = BuscarAvion(fabricante);
+
+            if (avion != null)
             {
-                if (avion.Fabricante == fabricante)
-                {
-                    return avion;
-                }
+                return avion;
             }
-            throw new Exception($"Avión con fabricante '{fabricante}' no encontrado.");
+            else
+            {
+                throw new Exception($"Avión con fabricante '{fabricante}' no encontrado.");
+            }
         }
 
         //Buscar Ruta por ID
+        private Ruta BuscarRuta(int id)
+        {
+            Ruta ruta = null;
+            int i = 0;
+            while (i < _rutas.Count && ruta == null)
+            {
+                if (_rutas[i].ID == id)
+                {
+                    ruta = _rutas[i];
+                }
+                i++;
+            }
+            return ruta;
+        }
+
         public Ruta GetRutaPorId(int id)
         {
-            foreach (Ruta ruta in _rutas)
+            Ruta ruta = BuscarRuta(id);
+
+            if (ruta != null)
             {
-                if (ruta.ID == id)
-                {
-                    return ruta;
-                }
+                return ruta;
             }
-            throw new Exception($"Ruta con ID {id} no encontrada.");
+            else
+            {
+                throw new Exception($"Ruta con ID {id} no encontrada.");
+            }
         }
 
         //Buscar Vuelo por numeroVuelo
+        private Vuelo BuscarVuelo(string numeroVuelo)
+        {
+            Vuelo vuelo = null;
+            int i = 0;
+            while (i < _vuelos.Count && vuelo == null)
+            {
+                if (_vuelos[i].NumeroVuelo == numeroVuelo)
+                {
+                    vuelo = _vuelos[i];
+                }
+                i++;
+            }
+            return vuelo;
+        }
+
         public Vuelo GetVueloPorNumeroVuelo(string numeroVuelo)
         {
-            foreach (Vuelo vuelo in _vuelos)
+            Vuelo vuelo = BuscarVuelo(numeroVuelo);
+
+            if (vuelo != null)
             {
-                if (vuelo.NumeroVuelo == numeroVuelo)
-                {
-                    return vuelo;
-                }
+                return vuelo;
             }
-            throw new Exception($"El vuelo con el número {numeroVuelo} no fué encontrado.");
+            else
+            {
+                throw new Exception($"El vuelo con el número {numeroVuelo} no fué encontrado.");
+            }
         }
 
         //Buscar Cliente por documento
@@ -409,14 +486,48 @@ namespace LogicaNegocio
             }
             throw new Exception($"El cliente con el documento {documento} no fué encontrado.");
         }
+
+        //Buscar Usuario por correo
+        private Usuario BuscarUsuarioPorCorreo(string correo)
+        {
+            Usuario usuarioBuscado = null;
+            int i = 0;
+
+            while (i < _usuarios.Count && usuarioBuscado == null)
+            {
+                if (_usuarios[i].Correo == correo)
+                {
+                    usuarioBuscado = _usuarios[i];
+                }
+                i++;
+            }
+
+            return usuarioBuscado;
+        }
+
+        public Usuario GetUsuarioEnSesion(string correo)
+        {
+            Usuario usuario = BuscarUsuarioPorCorreo(correo);
+
+            if (usuario != null)
+            {
+                return usuario;
+            }
+            else
+            {
+                throw new Exception($"No se encontró ningún usuario con el correo {correo}.");
+            }
+        }
+
+
         //Lista de vuelos según el código de aeropuerto
-        public List<Vuelo> MostrarVuelosEnAeropuerto(Aeropuerto aeropuerto)
+        public List<Vuelo> MostrarVuelosEnAeropuerto(string codigoIATA)
         {
             List<Vuelo> vuelosEnAeropuerto = new List<Vuelo>();
             foreach (Vuelo vuelo in _vuelos)
             {
-                if (aeropuerto.CodigoIATA == vuelo.Ruta.AeropuertoSalida.CodigoIATA ||
-                    aeropuerto.CodigoIATA == vuelo.Ruta.AeropuertoLlegada.CodigoIATA)
+                if (codigoIATA.ToUpper() == vuelo.Ruta.AeropuertoSalida.CodigoIATA ||
+                    codigoIATA.ToUpper() == vuelo.Ruta.AeropuertoLlegada.CodigoIATA)
                 {
                     vuelosEnAeropuerto.Add(vuelo);
                 }
@@ -457,6 +568,21 @@ namespace LogicaNegocio
                 i++;
             }
             return rol;
+        }
+
+        public List<Pasaje> BuscarPasajesPorCliente(Cliente cliente)
+        {
+            List<Pasaje> pasajesCliente = new List<Pasaje>();
+
+            foreach (Pasaje pasaje in _pasajes)
+            {
+                if (pasaje.Pasajero.Equals(cliente))
+                {
+                    pasajesCliente.Add(pasaje);
+                }
+            }
+
+            return pasajesCliente;
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public abstract class Usuario
     {
-        private string _correo;
+        protected string _correo;
         private string _contrasena;
         protected string _rol;
 
@@ -24,10 +24,11 @@
         }
 
         public Usuario() { }
-        public Usuario(string correo, string contrasena)
+        public Usuario(string correo, string contrasena, string rol)
         {
             _correo = correo;
             _contrasena = contrasena;
+            _rol = rol;
         }
 
         public void Validar()

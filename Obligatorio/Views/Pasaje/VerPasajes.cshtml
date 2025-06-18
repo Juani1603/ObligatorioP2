@@ -1,0 +1,42 @@
+﻿@using LogicaNegocio;
+@model List<Pasaje>
+@{
+    ViewData["Title"] = "Ver Pasajes";
+}
+
+<h2>Ver Pasajes</h2>
+
+<p class="alert-success">@TempData["Mensaje"]</p>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Número de vuelo</th>
+                <th>Ruta</th>
+                <th>Fecha</th>
+                <th>Tipo Equipaje</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Pasaje pasaje in Model)
+            {
+                <tr>
+                    <td>@pasaje.Vuelo.NumeroVuelo</td>
+                    <td>@pasaje.Vuelo.Ruta</td>
+                    <td>@pasaje.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td>@pasaje.Equipaje</td>
+                    <td>$ @pasaje.Precio</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-danger">No hay vuelos disponibles.</p>
+}
+
+@ViewBag.Mensaje

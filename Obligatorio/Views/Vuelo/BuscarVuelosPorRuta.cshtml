@@ -1,0 +1,57 @@
+﻿@using LogicaNegocio;
+@model List<Vuelo>
+
+@{
+    ViewData["Title"] = "Buscar vuelos por ruta";
+}
+
+<h1>Buscar vuelos por ruta</h1>
+
+<form method="post" asp-action="BuscarVuelosPorRuta">
+    <div>
+        <label for="codigoIATAsalida">Código IATA Salida:</label>
+        <input type="text" name="codigoIATAsalida" id="codigoIATAsalida" />
+    </div>
+
+    <div>
+        <label for="codigoIATAllegada">Código IATA Llegada:</label>
+        <input type="text" name="codigoIATAllegada" id="codigoIATAllegada" />
+    </div>
+
+    <div>
+        <button type="submit">Buscar</button>
+    </div>
+</form>
+
+@if (ViewBag.Mensaje != null)
+{
+    <p style="color:red">@ViewBag.Mensaje</p>
+}
+
+@if (Model != null && Model.Count > 0)
+{
+    <h2>Vuelos encontrados:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Número de Vuelo</th>
+                <th>Ruta</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Vuelo vuelo in Model)
+            {
+                <tr>
+                    <td>@vuelo.NumeroVuelo</td>
+                    <td>@vuelo.Ruta</td>
+                    <td><a href="~/Vuelo/DetallesVuelo?numeroVuelo=@vuelo.NumeroVuelo">Ver Vuelo</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (Model != null)
+{
+    <p>No se encontraron vuelos que coincidan con los datos ingresados.</p>
+}
+

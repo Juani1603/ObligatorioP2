@@ -26,11 +26,13 @@ namespace LogicaNegocio
         public Aeropuerto AeropuertoSalida
         {
             get { return _aeropuertoSalida; }
+            set {  _aeropuertoSalida = value;}
         }
 
         public Aeropuerto AeropuertoLlegada
         {
             get { return _aeropuertoLlegada; }
+            set { _aeropuertoLlegada = value;}
         }
 
         public Ruta(Aeropuerto aeropuertoSalida, Aeropuerto aeropuertoLlegada, double distanciaKm)
@@ -68,6 +70,12 @@ namespace LogicaNegocio
 
             return sonIguales;
         }
+
+        public override string ToString()
+        {
+            return _aeropuertoSalida.CodigoIATA + "-" + _aeropuertoLlegada.CodigoIATA;
+        }
+        
 
         public double CalcularCostoTasas()
         {

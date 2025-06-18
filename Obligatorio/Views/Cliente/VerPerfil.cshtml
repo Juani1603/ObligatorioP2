@@ -1,0 +1,31 @@
+﻿@model LogicaNegocio.Usuario 
+
+@{
+    ViewData["Title"] = "Perfil";
+}
+
+<div style="max-width: 600px; margin: 50px auto; padding: 30px;">
+    <h2 style="text-align: center; color: #333;"> Perfil</h2>
+
+    <div style="margin-top: 30px;">
+        <p><strong> Correo:</strong> @Model.Correo</p>
+        @{
+            if (Model is LogicaNegocio.Cliente cliente)
+            {
+                <p><strong> Documento:</strong> @cliente.Documento</p>
+                <p><strong> Nombre:</strong> @cliente.Nombre</p>
+                <p><strong> Nacionalidad:</strong> @cliente.Nacionalidad</p>
+
+            } else if(Model is LogicaNegocio.Administrador admin)
+            {
+                <p><strong> Apodo:</strong> @admin.Apodo</p>
+            }
+        }
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="@Url.Action("Index", "Home")"> Volver al inicio</a>
+    </div>
+</div>
+
+

@@ -1,7 +1,5 @@
 using LogicaNegocio;
 using Microsoft.AspNetCore.Mvc;
-using Obligatorio.Models;
-using System.Diagnostics;
 
 namespace Obligatorio.Controllers
 {
@@ -10,12 +8,21 @@ namespace Obligatorio.Controllers
 
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetString("rol") != null)
+            {
+                string correo = HttpContext.Session.GetString("correo");
+                return View(model: correo);
+            }
             return View();
         }
 
         public IActionResult Login()
         {
-            return View();
+            if (HttpContext.Session.GetString("rol") == null)
+            {
+                return View();
+            }
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -27,6 +34,8 @@ namespace Obligatorio.Controllers
                 if (!string.IsNullOrEmpty(rol))
                 {
                     HttpContext.Session.SetString("rol", rol);
+                    HttpContext.Session.SetString("correo", correo);
+                    TempData["Mensaje"] = "Inicio de sesión exitoso";
                     return RedirectToAction("Index");
                 }
                 else
@@ -43,7 +52,10 @@ namespace Obligatorio.Controllers
 
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear();
+            if (HttpContext.Session.GetString("rol") != null)
+            {
+                HttpContext.Session.Clear();
+            }
             return RedirectToAction("Login");
         }
     }

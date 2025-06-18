@@ -2,7 +2,7 @@
 
 namespace LogicaNegocio
 {
-    public class Pasaje
+    public class Pasaje : IComparable<Pasaje>
     {
         private int _id;
         private static int s_contadorId;
@@ -13,16 +13,36 @@ namespace LogicaNegocio
         private double _precio;
         private static double _margenGanancia = 1.25;
 
+        public Vuelo Vuelo
+        {
+            get { return _vuelo; }
+            set { _vuelo = value; }
+        }
+
         public DateTime Fecha
         {
             get { return _fecha; }
+            set {  _fecha = value; }
+        }
+
+        public Cliente Pasajero
+        {
+            get { return _pasajero; }
+            set { _pasajero = value; }  
         }
 
         public Equipaje Equipaje
         {
             get { return _equipaje; }
+            set { _equipaje = value; }
         }
 
+        public double Precio
+        {
+            get { return _precio; }
+        }
+
+        public Pasaje() { }
 
         public Pasaje(Vuelo vuelo, DateTime fecha, Cliente pasajero, Equipaje equipaje)
         {
@@ -31,6 +51,7 @@ namespace LogicaNegocio
             _fecha = fecha;
             _pasajero = pasajero;
             _equipaje = equipaje;
+            _precio = DefinirPrecioFinal();
         }
 
         //Métodos para calcular precio pasaje
@@ -44,13 +65,13 @@ namespace LogicaNegocio
             return _vuelo.CalcularTasasRuta();
         }
 
-        public double CalcularPrecioFinal(Pasaje pasaje)
+        public double DefinirPrecioFinal()
         {
             double precio = CalcularPrecioBasePasaje() + CalcularImpuestosPasaje();
 
-            precio *= _pasajero.ImpuestoPasajePorCliente(pasaje);
+            precio *= _pasajero.ImpuestoPasajePorCliente(this);
 
-            return precio;
+            return Math.Round(precio, 2);
         }
 
 
@@ -82,7 +103,14 @@ namespace LogicaNegocio
             {
                 throw new Exception("El precio debe tener un valor numero mayor a cero.");
             }
-
+            if (_fecha == DateTime.MinValue)
+            {
+                throw new Exception("La fecha no es válida");
+            }
+            if (_fecha.Date < DateTime.Today)
+            {
+                throw new Exception("La fecha ingresada no puede ser menor a la fecha actual.");
+            }
         }
 
         public override bool Equals(object? obj)
@@ -101,5 +129,9 @@ namespace LogicaNegocio
             return $"ID: {_id}, Nombre del pasajero: {_pasajero.Nombre}, Precio: ${_precio}, Fecha: {_fecha.ToShortDateString()}, Número de vuelo: {_vuelo.NumeroVuelo}";
         }
 
+        public int CompareTo(Pasaje? other)
+        {
+            return (_precio.CompareTo(other._precio)) * -1;
+        }
     }
 }

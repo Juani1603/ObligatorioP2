@@ -1,0 +1,39 @@
+﻿@using LogicaNegocio;
+@{
+    ViewData["Title"] = "Listado de vuelos";
+}
+
+<h2>Listado de Vuelos</h2>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Número de vuelo</th>
+                <th>Modelo del avión</th>
+                <th>Ruta</th>
+                <th>Frecuencia</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Vuelo vuelo in Model)
+            {
+                <tr>
+                    <td>@vuelo.NumeroVuelo</td>
+                    <td>@vuelo.Avion.Modelo</td>
+                    <td>@vuelo.Ruta</td>
+                    <td>@vuelo.Frecuencia</td>
+                    <td><a href="~/Vuelo/DetallesVuelo?numeroVuelo=@vuelo.NumeroVuelo">Ver Vuelo</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-danger">No hay vuelos disponibles.</p>
+}
+
+@ViewBag.Mensaje

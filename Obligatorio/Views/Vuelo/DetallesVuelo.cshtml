@@ -1,0 +1,48 @@
+﻿@using LogicaNegocio;
+@model Vuelo
+
+@{
+    ViewData["Title"] = "Detalles de Vuelo";
+}
+
+<h1>Detalle de Vuelo</h1>
+@if (Model != null)
+{
+    <h4>Número de Vuelo</h4>
+    <p>@Model.NumeroVuelo</p>
+
+    <h4>Modelo del avión</h4>
+    <p>@Model.Avion.Modelo</p>
+
+    <h4>Ruta</h4>
+    <p>@Model.Ruta</p>
+
+    <h4>Día</h4>
+    <p>@Model.Frecuencia</p>
+
+    <form method="post" asp-controller="Pasaje" asp-action="RegistrarPasaje">
+        <input type="hidden" name="NumeroVuelo" value="@Model.NumeroVuelo" />
+
+        <label>Fecha de vuelo</label><br />
+        <input type="date" name="Fecha" required /><br />
+
+        <label>Tipo Equipaje</label><br />
+        <select name="tipoEquipaje">
+            @{
+                string[] TipoEquipaje = Enum.GetNames(typeof(LogicaNegocio.Enum.Equipaje));
+            }
+            @for (int i = 0; i < TipoEquipaje.Length; i++)
+            {
+                <option value="@i">@TipoEquipaje[i]</option>
+            }
+        </select><br />
+
+        <input type="submit" value="Comprar Pasaje" />
+    </form>
+    <br />
+    <p class="alert-danger">@TempData["Mensaje"]</p>
+}
+else
+{
+    <p class="text-danger">No se encontró información del vuelo.</p>
+}

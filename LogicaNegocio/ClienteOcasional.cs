@@ -11,8 +11,8 @@
         }
         public ClienteOcasional() : base() { }
 
-        public ClienteOcasional(string correo, string contrasena, string documento, string nombre, string nacionalidad)
-            : base(correo, contrasena, documento, nombre, nacionalidad)
+        public ClienteOcasional(string correo, string contrasena, string rol, string documento, string nombre, string nacionalidad)
+            : base(correo, contrasena, rol, documento, nombre, nacionalidad)
         {
             //Determina aleatoriamente si el cliente es elegible
             Random random = new Random();
