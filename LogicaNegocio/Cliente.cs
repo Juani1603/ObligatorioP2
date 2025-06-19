@@ -66,6 +66,8 @@ namespace LogicaNegocio
             return _rol = "Cliente";
         }
 
+        public abstract string MostrarDatos();
+
         public abstract double ImpuestoPasajePorCliente(Pasaje pasaje);
     }
 }

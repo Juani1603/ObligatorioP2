@@ -29,17 +29,23 @@
             return base.ToString() + $" ¿Es elegible? {(_elegibleParaRegalo ? "Sí" : "No")}";
         }
 
-        public void CambiarElegibilidad(ClienteOcasional cliente, string elegible)
+        public void CambiarElegibilidad(string elegible)
         {
             switch (elegible)
             {
                 case "si":
-                    cliente.ElegibleParaRegalo = true;
+                    _elegibleParaRegalo = true;
                     break;
                 case "no":
-                    cliente.ElegibleParaRegalo = false;
+                    _elegibleParaRegalo = false;
                     break;
             }
+        }
+
+        public override string MostrarDatos()
+        {
+            return  (_elegibleParaRegalo ? "Sí" : "No");
+            
         }
 
         public override double ImpuestoPasajePorCliente(Pasaje pasaje)

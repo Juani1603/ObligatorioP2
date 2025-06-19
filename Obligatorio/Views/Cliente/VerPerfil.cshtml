@@ -1,4 +1,5 @@
-﻿@model LogicaNegocio.Usuario 
+﻿@using LogicaNegocio;
+@model Cliente 
 
 @{
     ViewData["Title"] = "Perfil";
@@ -8,19 +9,15 @@
     <h2 style="text-align: center; color: #333;"> Perfil</h2>
 
     <div style="margin-top: 30px;">
-        <p><strong> Correo:</strong> @Model.Correo</p>
-        @{
-            if (Model is LogicaNegocio.Cliente cliente)
-            {
-                <p><strong> Documento:</strong> @cliente.Documento</p>
-                <p><strong> Nombre:</strong> @cliente.Nombre</p>
-                <p><strong> Nacionalidad:</strong> @cliente.Nacionalidad</p>
 
-            } else if(Model is LogicaNegocio.Administrador admin)
+            @if (Model != null)
             {
-                <p><strong> Apodo:</strong> @admin.Apodo</p>
+                <p><strong> Correo:</strong> @Model.Correo</p>
+                <p><strong> Documento:</strong> @Model.Documento</p>
+                <p><strong> Nombre:</strong> @Model.Nombre</p>
+                <p><strong> Nacionalidad:</strong> @Model.Nacionalidad</p>
+                <p><strong> Puntos / Es elegible?:</strong> @Model.MostrarDatos()</p>
             }
-        }
     </div>
 
     <div style="margin-top: 40px; text-align: center;">

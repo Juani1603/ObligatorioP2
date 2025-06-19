@@ -48,6 +48,11 @@ namespace LogicaNegocio
             return porcentaje;
         }
 
+        public override string MostrarDatos()
+        {
+            return _puntos.ToString();
+        }
+
         //Método para sumar o restar los puntos según el input del usuario (+ / -)
         public void ModificarPuntos(int puntos, string inputAdmin)
         {

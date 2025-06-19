@@ -1,0 +1,36 @@
+﻿@using LogicaNegocio;
+@model List<Cliente>
+
+@{
+    ViewData["Title"] = "VerTodosLosClientes";
+}
+
+<h1>Lista de Clientes</h1>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Correo</th>
+                <th>Documento</th>
+                <th>Nombre</th>
+                <th>Nacionalidad</th>
+                <th>Puntos / Es Elegible?</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Cliente cliente in Model)
+            {
+                <tr>
+                    <td>@cliente.Correo</td>
+                    <td>@cliente.Documento</td>
+                    <td>@cliente.Nombre</td>
+                    <td>@cliente.Nacionalidad</td>
+                    <td>@cliente.MostrarDatos()</td>
+                    <td><a href="~/Cliente/EditarCliente?correo=@cliente.Correo">Editar Cliente</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

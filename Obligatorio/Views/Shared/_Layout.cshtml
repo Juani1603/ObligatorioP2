@@ -48,17 +48,23 @@
                                     <li class="nav-item">
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Pasaje" asp-action="VerPasajes">Ver Pasajes</a>
                                     </li>
-                                }
-                            </ul>
 
-                            <ul class="navbar-nav ms-auto">
+                                    <li class="nav-item ms-auto">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Cliente" asp-action="VerPerfil">👤 Ver Perfil</a>
+                                    </li>
+                                }
+                            
+                            @if (rol == "Admin")
+                            {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Cliente" asp-action="VerPerfil">👤 Ver Perfil</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Pasaje" asp-action="VerPasajes">Ver Todos los Pasajes</a>
                                 </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Cliente" asp-action="VerTodosLosClientes">Lista de Clientes</a>
+                                    </li>
+                            }
                             </ul>
                         }
-
-
                     </ul>
                 </div>
             </div>

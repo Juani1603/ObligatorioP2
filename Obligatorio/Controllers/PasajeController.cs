@@ -7,7 +7,7 @@ namespace Obligatorio.Controllers
     public class PasajeController : Controller
     {
         [HttpPost]
-        public IActionResult RegistrarPasaje(string NumeroVuelo, DateTime Fecha, int tipoEquipaje)
+        public IActionResult RegistrarPasaje(string numeroVuelo, DateTime fecha, int tipoEquipaje)
         {
             try
             {
@@ -19,12 +19,12 @@ namespace Obligatorio.Controllers
                 }
 
                 // Obtener cliente y vuelo
-                Usuario usuario = Sistema.Instancia.GetUsuarioEnSesion(correo);
-                Vuelo vuelo = Sistema.Instancia.GetVueloPorNumeroVuelo(NumeroVuelo);
+                Cliente cliente = Sistema.Instancia.GetClientePorCorreo(correo);
+                Vuelo vuelo = Sistema.Instancia.GetVueloPorNumeroVuelo(numeroVuelo);
 
-                if (usuario is Cliente cliente){
-
-                    Pasaje pasaje = new Pasaje(vuelo, Fecha, cliente, (Equipaje)tipoEquipaje);
+                if (cliente != null && vuelo != null && fecha != null)
+                {
+                    Pasaje pasaje = new Pasaje(vuelo, fecha, cliente, (Equipaje)tipoEquipaje);
 
                     Sistema.Instancia.AltaPasaje(pasaje);
 
@@ -34,34 +34,46 @@ namespace Obligatorio.Controllers
             catch (Exception ex)
             {
                 TempData["Mensaje"] = ex.Message;
-                return RedirectToAction("DetallesVuelo", "Vuelo", new { numeroVuelo = NumeroVuelo });
+                return RedirectToAction("DetallesVuelo", "Vuelo", new { numeroVuelo = numeroVuelo });
             }
             return RedirectToAction("VerPasajes");
         }
 
         public IActionResult VerPasajes()
         {
-            List<Pasaje> pasajesCliente = new List<Pasaje>();
-            Usuario usuarioEnSesion = Sistema.Instancia.GetUsuarioEnSesion(HttpContext.Session.GetString("correo"));
+            if (HttpContext.Session.GetString("rol") != null)
+            {
+                List<Pasaje> pasajesCliente = new List<Pasaje>();
+                string rol = HttpContext.Session.GetString("rol");
 
-            try
-            {
-                if (usuarioEnSesion is Cliente cliente)
+                try
                 {
-                    pasajesCliente = Sistema.Instancia.BuscarPasajesPorCliente(cliente);
+                    if (rol == "Admin")
+                    {
+                        pasajesCliente = Sistema.Instancia.Pasajes;
+                        return View(pasajesCliente);
+                    }
+
+                    Cliente clienteEnSesion = Sistema.Instancia.GetClientePorCorreo(HttpContext.Session.GetString("correo"));
+
+                    if (clienteEnSesion != null && rol == "Cliente")
+                    {
+                        pasajesCliente = Sistema.Instancia.BuscarPasajesPorCliente(clienteEnSesion);
+                    }
+
+                    if (pasajesCliente == null)
+                    {
+                        ViewBag.Mensaje = "No hay pasajes listados.";
+                    }
+                    pasajesCliente.Sort();
                 }
-                
-                if (pasajesCliente == null)
+                catch (Exception ex)
                 {
-                    ViewBag.Mensaje = "De momento tienes pasajes comprados.";
+                    ViewBag.Mensaje = ex.Message;
                 }
-                pasajesCliente.Sort();
+                return View(pasajesCliente);
             }
-            catch (Exception ex)
-            {
-                ViewBag.Mensaje = ex.Message;
-            }
-            return View(pasajesCliente);
+            return RedirectToAction("Login", "Home");
         }
     }
 }

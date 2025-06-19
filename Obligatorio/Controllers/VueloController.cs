@@ -22,17 +22,22 @@ namespace Obligatorio.Controllers
                     }
                     return View(vuelos);
                 }
+                return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Home");
         }
 
         public IActionResult BuscarVuelosPorRuta()
         {
-            if (HttpContext.Session.GetString("rol") != null && HttpContext.Session.GetString("rol") == "Cliente")
+            if (HttpContext.Session.GetString("rol") != null)
             {
-                return View();
+                if (HttpContext.Session.GetString("rol") == "Cliente")
+                {
+                    return View();
+                }
+                return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Home");
         }
 
         //Buscar vuelos por ruta
@@ -88,21 +93,24 @@ namespace Obligatorio.Controllers
 
         public IActionResult DetallesVuelo(string numeroVuelo)
         {
-            if (HttpContext.Session.GetString("rol") != null && HttpContext.Session.GetString("rol") == "Cliente")
+            if (HttpContext.Session.GetString("rol") != null)
             {
-                Vuelo vuelo = null;
-                try
+                if (HttpContext.Session.GetString("rol") == "Cliente")
                 {
-                    vuelo = Sistema.Instancia.GetVueloPorNumeroVuelo(numeroVuelo);
+                    Vuelo vuelo = null;
+                    try
+                    {
+                        vuelo = Sistema.Instancia.GetVueloPorNumeroVuelo(numeroVuelo);
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.Mensaje = ex.Message;
+                    }
+                    return View(vuelo);
                 }
-                catch (Exception ex)
-                {
-                    ViewBag.Mensaje = ex.Message;
-                }
-                return View(vuelo);
+                return RedirectToAction("Index", "Home");
             }
-
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Home");
         }
     }
 }

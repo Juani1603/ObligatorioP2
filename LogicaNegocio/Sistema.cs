@@ -17,6 +17,16 @@ namespace LogicaNegocio
             get { return _vuelos; }
         }
 
+        public List<Pasaje> Pasajes
+        {
+            get { return _pasajes; }
+        }
+
+        public List<Usuario> Usuarios
+        {
+            get { return _usuarios; }
+        }
+
         private Sistema()
         {
             PrecargaUsuarios();
@@ -519,6 +529,38 @@ namespace LogicaNegocio
             }
         }
 
+        //Buscar Cliente por correo
+        private Cliente BuscarClientePorCorreo(string correo)
+        {
+            Cliente clienteBuscado = null;
+            int i = 0;
+
+            while (i < _usuarios.Count && clienteBuscado == null)
+            {
+                if (_usuarios[i].Correo == correo && _usuarios[i] is Cliente cliente)
+                {
+                    clienteBuscado = cliente;
+                }
+                i++;
+            }
+
+            return clienteBuscado;
+        }
+
+        public Cliente GetClientePorCorreo(string correo)
+        {
+            Cliente cliente = BuscarClientePorCorreo(correo);
+
+            if (cliente != null)
+            {
+                return cliente;
+            }
+            else
+            {
+                throw new Exception("No se encontró ningún cliente con ese correo.");
+            }
+        }
+
 
         //Lista de vuelos según el código de aeropuerto
         public List<Vuelo> MostrarVuelosEnAeropuerto(string codigoIATA)
@@ -583,6 +625,39 @@ namespace LogicaNegocio
             }
 
             return pasajesCliente;
+        }
+        public Cliente CastearACliente(Usuario usuario)
+        {
+            Cliente clienteCasteado = null;
+
+            clienteCasteado = (Cliente)usuario;
+
+            if (clienteCasteado == null)
+            {
+                throw new Exception("No se pudo castear este objeto.");
+            }
+            return clienteCasteado;
+        }
+
+        public List<Pasaje> PasajesOrdenadosPorFecha()
+        {
+            List<Pasaje> pasajes = new List<Pasaje>(_pasajes);
+            pasajes.Sort(new OrdenamientoPasajePorFecha());
+            return pasajes;
+        }
+
+        public List<Cliente> TodosLosClientes()
+        {
+            List<Cliente> clientes = new List<Cliente>();
+
+            foreach (Usuario usuario in _usuarios)
+            {
+                if (usuario is Cliente cliente)
+                {
+                    clientes.Add(cliente);
+                }
+            }
+            return clientes;
         }
     }
 }
