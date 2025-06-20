@@ -44,50 +44,28 @@ namespace Obligatorio.Controllers
         [HttpPost]
         public IActionResult BuscarVuelosPorRuta(string codigoIATAsalida, string codigoIATAllegada)
         {
-            List<Vuelo> vuelosPorRuta = new List<Vuelo>();
+            IEnumerable<Vuelo> vuelosPorRuta = new List<Vuelo>();
 
             if (string.IsNullOrEmpty(codigoIATAsalida) && string.IsNullOrEmpty(codigoIATAllegada))
             {
-                ViewBag.Mensaje = "Debe introducir al menos un código IATA";
+                ViewBag.Mensaje = "Debe introducir al menos un código IATA.";
+                return View(vuelosPorRuta); 
             }
 
             try
             {
-                //Listas temporales para encontrar vuelos
-                List<Vuelo> vuelosSalida = new List<Vuelo>();
-                List<Vuelo> vuelosLlegada = new List<Vuelo>();
+                vuelosPorRuta = Sistema.Instancia.BuscarVuelosPorRuta(codigoIATAsalida, codigoIATAllegada);
 
-                if (!string.IsNullOrEmpty(codigoIATAsalida))
+                if (vuelosPorRuta == null || vuelosPorRuta.Count() == 0)
                 {
-                    vuelosSalida = Sistema.Instancia.MostrarVuelosEnAeropuerto(codigoIATAsalida);
+                    ViewBag.Mensaje = "No se encontraron vuelos con los criterios ingresados.";
                 }
-
-                if (!string.IsNullOrEmpty(codigoIATAllegada))
-                {
-                    vuelosLlegada = Sistema.Instancia.MostrarVuelosEnAeropuerto(codigoIATAllegada);
-                }
-
-                foreach (Vuelo vuelo in vuelosSalida)
-                {
-                    if (!vuelosPorRuta.Contains(vuelo))
-                    {
-                        vuelosPorRuta.Add(vuelo);
-                    }
-                }
-
-                foreach (Vuelo vuelo in vuelosLlegada)
-                {
-                    if (!vuelosPorRuta.Contains(vuelo))
-                    {
-                        vuelosPorRuta.Add(vuelo);
-                    }
-                }
-
             }
             catch (Exception ex)
             {
                 ViewBag.Mensaje = ex.Message;
             }
+
             return View(vuelosPorRuta);
         }
 

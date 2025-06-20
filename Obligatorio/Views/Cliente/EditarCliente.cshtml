@@ -1,0 +1,32 @@
+﻿@using LogicaNegocio;
+@model Cliente
+
+@{
+    ViewData["Title"] = "EditarCliente";
+}
+
+<h1>EditarCliente</h1>
+
+@if (Model != null)
+{
+    <h4>Cliente: @Model.Correo</h4>
+
+    <form method="post">
+    @if (Model.TipoCliente() == "ClienteOcasional")
+    {
+            <label>Elegible para regalo:</label>
+            <select name="ElegibleParaRegalo">
+                <option value="si">Sí</option>
+                <option value="no">No</option>
+            </select>
+    }
+    @if (Model.TipoCliente() == "ClientePremium")
+    {
+            <label>Puntos:</label>
+            <input name="Puntos" type="number" />
+    }
+
+    <input type="submit" value="Guardar" />
+    </form>
+}
+<p class="alert-danger">@ViewBag.Mensaje</p>

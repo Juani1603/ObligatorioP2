@@ -563,19 +563,34 @@ namespace LogicaNegocio
 
 
         //Lista de vuelos según el código de aeropuerto
-        public List<Vuelo> MostrarVuelosEnAeropuerto(string codigoIATA)
+        public List<Vuelo> BuscarVuelosPorRuta(string codigoSalida, string codigoLlegada)
         {
-            List<Vuelo> vuelosEnAeropuerto = new List<Vuelo>();
+            List<Vuelo> resultado = new List<Vuelo>();
+
             foreach (Vuelo vuelo in _vuelos)
             {
-                if (codigoIATA.ToUpper() == vuelo.Ruta.AeropuertoSalida.CodigoIATA ||
-                    codigoIATA.ToUpper() == vuelo.Ruta.AeropuertoLlegada.CodigoIATA)
+                bool coincideSalida = string.IsNullOrEmpty(codigoSalida) || vuelo.Ruta.AeropuertoSalida.CodigoIATA.Equals(codigoSalida.ToUpper());
+                bool coincideLlegada = string.IsNullOrEmpty(codigoLlegada) || vuelo.Ruta.AeropuertoLlegada.CodigoIATA.Equals(codigoLlegada.ToUpper());
+
+                // Si se ingresan ambos, deben coincidir ambos
+                if (!string.IsNullOrEmpty(codigoSalida) && !string.IsNullOrEmpty(codigoLlegada))
                 {
-                    vuelosEnAeropuerto.Add(vuelo);
+                    if (coincideSalida && coincideLlegada)
+                        resultado.Add(vuelo);
+                }
+                else if (!string.IsNullOrEmpty(codigoSalida) && coincideSalida)
+                {
+                    resultado.Add(vuelo);
+                }
+                else if (!string.IsNullOrEmpty(codigoLlegada) && coincideLlegada)
+                {
+                    resultado.Add(vuelo);
                 }
             }
-            return vuelosEnAeropuerto;
+
+            return resultado;
         }
+
         //Lista de pasajes según rango de fechas
         public List<Pasaje> PasajesFiltradosPorFecha(DateTime fechaDesde, DateTime fechaHasta)
         {
@@ -626,18 +641,6 @@ namespace LogicaNegocio
 
             return pasajesCliente;
         }
-        public Cliente CastearACliente(Usuario usuario)
-        {
-            Cliente clienteCasteado = null;
-
-            clienteCasteado = (Cliente)usuario;
-
-            if (clienteCasteado == null)
-            {
-                throw new Exception("No se pudo castear este objeto.");
-            }
-            return clienteCasteado;
-        }
 
         public List<Pasaje> PasajesOrdenadosPorFecha()
         {
@@ -658,6 +661,11 @@ namespace LogicaNegocio
                 }
             }
             return clientes;
+        }
+
+        public string TipoCliente(Cliente cliente)
+        {
+            return cliente.GetType().Name; 
         }
     }
 }

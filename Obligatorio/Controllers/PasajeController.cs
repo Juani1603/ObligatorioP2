@@ -13,7 +13,7 @@ namespace Obligatorio.Controllers
             {
                 string correo = HttpContext.Session.GetString("correo");
 
-                if (string.IsNullOrEmpty(correo))
+                if (string.IsNullOrEmpty(HttpContext.Session.GetString("rol")))
                 {
                     TempData["Mensaje"] = "Debe iniciar sesión para comprar un pasaje.";
                 }
@@ -22,7 +22,7 @@ namespace Obligatorio.Controllers
                 Cliente cliente = Sistema.Instancia.GetClientePorCorreo(correo);
                 Vuelo vuelo = Sistema.Instancia.GetVueloPorNumeroVuelo(numeroVuelo);
 
-                if (cliente != null && vuelo != null && fecha != null)
+                if (cliente != null && vuelo != null && fecha != DateTime.MinValue)
                 {
                     Pasaje pasaje = new Pasaje(vuelo, fecha, cliente, (Equipaje)tipoEquipaje);
 
@@ -43,7 +43,7 @@ namespace Obligatorio.Controllers
         {
             if (HttpContext.Session.GetString("rol") != null)
             {
-                List<Pasaje> pasajesCliente = new List<Pasaje>();
+                IEnumerable<Pasaje> pasajesCliente = new List<Pasaje>();
                 string rol = HttpContext.Session.GetString("rol");
 
                 try
@@ -65,13 +65,16 @@ namespace Obligatorio.Controllers
                     {
                         ViewBag.Mensaje = "No hay pasajes listados.";
                     }
-                    pasajesCliente.Sort();
+
+                    List<Pasaje> pasajes = pasajesCliente.ToList();
+                    pasajes.Sort();
+                    return View(pasajes);
                 }
                 catch (Exception ex)
                 {
                     ViewBag.Mensaje = ex.Message;
                 }
-                return View(pasajesCliente);
+                return View();
             }
             return RedirectToAction("Login", "Home");
         }

@@ -36,7 +36,7 @@ namespace Obligatorio.Controllers
         {
             string correo = HttpContext.Session.GetString("correo");
 
-            if (correo == "Cliente" && HttpContext.Session.GetString("rol") != null)
+            if (HttpContext.Session.GetString("rol") == "Cliente" && HttpContext.Session.GetString("rol") != null)
             {
                 try
                 {
@@ -60,7 +60,7 @@ namespace Obligatorio.Controllers
 
                 return View();
             }
-            return RedirectToAction("Index", "Home");   
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult VerTodosLosClientes()
@@ -85,15 +85,75 @@ namespace Obligatorio.Controllers
                     {
                         TempData["Mensaje"] = ex.Message;
                     }
-                    return View(clientes);
+
+                    List<Cliente> listaClientes = clientes.ToList();
+                    listaClientes.Sort();
+                    return View(listaClientes);
                 }
                 return RedirectToAction("Index", "Home");
             }
             return RedirectToAction("Login", "Home");
         }
 
-        public IActionResult EditarCliente()
+        public IActionResult EditarCliente(string correo)
         {
+            if (HttpContext.Session.GetString("rol") != null)
+            {
+                if (HttpContext.Session.GetString("rol") == "Cliente")
+                {
+                    Cliente cliente = null;
+                    try
+                    {
+                        cliente = Sistema.Instancia.GetClientePorCorreo(correo);
+
+                        if (cliente != null)
+                        {
+                            return View(cliente);
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.Mensaje = ex.Message;
+                    }
+                    return View();
+                }
+                return RedirectToAction("Index", "Home");
+
+            }
+            return RedirectToAction("Login", "Home");
+
+        }
+
+        [HttpPost]
+        public IActionResult EditarCliente(string Correo, string ElegibleParaRegalo, int Puntos)
+        {
+            try
+            {
+                Cliente cliente = Sistema.Instancia.GetClientePorCorreo(Correo);
+
+                if (cliente == null)
+                {
+                    ViewBag.Mensaje = "Cliente no encontrado";
+                    return View();
+                }
+
+                if (cliente is ClienteOcasional ocasional && !string.IsNullOrEmpty(ElegibleParaRegalo))
+                {
+                    ocasional.CambiarElegibilidad(ElegibleParaRegalo);
+                }
+                else if (cliente is ClientePremium premium)
+                {
+                    premium.ModificarPuntos(Puntos);
+                }
+
+                TempData["Mensaje"] = "Cliente editado con éxito";
+                return RedirectToAction("VerTodosLosClientes");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Mensaje = ex.Message;
+            }
             return View();
         }
     }

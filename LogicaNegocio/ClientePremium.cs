@@ -53,18 +53,14 @@ namespace LogicaNegocio
             return _puntos.ToString();
         }
 
-        //Método para sumar o restar los puntos según el input del usuario (+ / -)
-        public void ModificarPuntos(int puntos, string inputAdmin)
+        public override string TipoCliente()
         {
-            switch (inputAdmin)
-            {
-                case "+":
-                    _puntos += puntos;
-                    break;
-                case "-":
-                    _puntos -= puntos;
-                    break;
-            }
+            return "ClientePremium";
+        }
+
+        public void ModificarPuntos(int puntos)
+        {
+            _puntos = puntos;
         }
     }
 }

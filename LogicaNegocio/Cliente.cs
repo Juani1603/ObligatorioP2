@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicaNegocio
 {
-    public abstract class Cliente:Usuario
+    public abstract class Cliente : Usuario, IComparable<Cliente>
     {
         private string _documento;
         private string _nombre;
@@ -68,6 +68,13 @@ namespace LogicaNegocio
 
         public abstract string MostrarDatos();
 
+        public abstract string TipoCliente();
+
         public abstract double ImpuestoPasajePorCliente(Pasaje pasaje);
+
+        public int CompareTo(Cliente? other)
+        {
+           return _documento.CompareTo(other._documento);
+        }
     }
 }

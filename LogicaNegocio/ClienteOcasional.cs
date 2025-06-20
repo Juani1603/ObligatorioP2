@@ -39,6 +39,8 @@
                 case "no":
                     _elegibleParaRegalo = false;
                     break;
+                default:
+                    throw new Exception("El valor debe ser 'si' o 'no'");
             }
         }
 
@@ -47,6 +49,12 @@
             return  (_elegibleParaRegalo ? "Sí" : "No");
             
         }
+
+        public override string TipoCliente()
+        {
+            return "ClienteOcasional";
+        }
+
 
         public override double ImpuestoPasajePorCliente(Pasaje pasaje)
         {
