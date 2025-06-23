@@ -51,7 +51,13 @@ namespace Obligatorio.Controllers
                     if (rol == "Admin")
                     {
                         pasajesCliente = Sistema.Instancia.Pasajes;
-                        return View(pasajesCliente);
+                        if (pasajesCliente != null && pasajesCliente.Count() > 0)
+                        {
+                            return View(pasajesCliente);
+                        } else
+                        {
+                            ViewBag.Mensaje = "No hay pasajes listados.";
+                        }
                     }
 
                     Cliente clienteEnSesion = Sistema.Instancia.GetClientePorCorreo(HttpContext.Session.GetString("correo"));
@@ -59,11 +65,12 @@ namespace Obligatorio.Controllers
                     if (clienteEnSesion != null && rol == "Cliente")
                     {
                         pasajesCliente = Sistema.Instancia.BuscarPasajesPorCliente(clienteEnSesion);
-                    }
 
-                    if (pasajesCliente == null)
-                    {
-                        ViewBag.Mensaje = "No hay pasajes listados.";
+                        if (pasajesCliente == null || pasajesCliente.Count() == 0)
+                        {
+                            ViewBag.Mensaje = "No hay pasajes listados.";
+                            return View();
+                        }
                     }
 
                     List<Pasaje> pasajes = pasajesCliente.ToList();

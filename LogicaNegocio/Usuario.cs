@@ -47,11 +47,42 @@
                 throw new Exception("La contraseña no puede estar vacía.");
             }
 
+            if (_contrasena.Length < 8)
+            {
+                throw new Exception("La contraseña debe tener al menos 8 caracteres.");
+            }
+
+            bool tieneLetra = false;
+            bool tieneNumero = false;
+
+            foreach (char caracter in _contrasena)
+            {
+                if (char.IsLetter(caracter))
+                {
+                    tieneLetra = true;
+                }
+                else if (char.IsDigit(caracter))
+                {
+                    tieneNumero = true;
+                }
+
+                if (tieneLetra && tieneNumero)
+                {
+                    break;
+                }
+            }
+
+            if (!tieneLetra || !tieneNumero)
+            {
+                throw new Exception("La contraseña debe contener al menos una letra y un número.");
+            }
+
             if (string.IsNullOrEmpty(_rol))
             {
-                throw new Exception("El rol es obligatorio");
+                throw new Exception("El rol es obligatorio.");
             }
         }
+
 
         public override bool Equals(object? obj)
         {

@@ -662,10 +662,5 @@ namespace LogicaNegocio
             }
             return clientes;
         }
-
-        public string TipoCliente(Cliente cliente)
-        {
-            return cliente.GetType().Name; 
-        }
     }
 }

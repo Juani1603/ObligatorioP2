@@ -11,7 +11,7 @@ namespace LogicaNegocio
         private Cliente _pasajero;
         private Equipaje _equipaje;
         private double _precio;
-        private static double _margenGanancia = 1.25;
+        private static double s_margenGanancia = 1.25;
 
         public Vuelo Vuelo
         {
@@ -57,7 +57,7 @@ namespace LogicaNegocio
         //Métodos para calcular precio pasaje
         public double CalcularPrecioBasePasaje()
         {
-            return _vuelo.CalcularCostoPorAsiento() * _margenGanancia;
+            return _vuelo.CalcularCostoPorAsiento() * s_margenGanancia;
         }
 
         public double CalcularImpuestosPasaje()

@@ -18,6 +18,7 @@
                 <th>Fecha</th>
                 <th>Tipo Equipaje</th>
                 <th>Precio</th>
+                <th>Email Cliente</th>
             </tr>
         </thead>
         <tbody>
@@ -29,14 +30,12 @@
                     <td>@pasaje.Fecha.ToString("dd/MM/yyyy")</td>
                     <td>@pasaje.Equipaje</td>
                     <td>$ @pasaje.Precio</td>
+                    <td> @pasaje.Pasajero.Correo</td>
                 </tr>
             }
         </tbody>
     </table>
 }
-else
-{
-    <p class="text-danger">No hay vuelos disponibles.</p>
-}
+
 
 @ViewBag.Mensaje

@@ -15,6 +15,10 @@ namespace Obligatorio.Controllers
                     try
                     {
                         vuelos = Sistema.Instancia.Vuelos;
+                        if (vuelos == null || vuelos.Count() == 0)
+                        {
+                            ViewBag.Mensaje = "No hay vuelos listados.";
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -49,7 +53,7 @@ namespace Obligatorio.Controllers
             if (string.IsNullOrEmpty(codigoIATAsalida) && string.IsNullOrEmpty(codigoIATAllegada))
             {
                 ViewBag.Mensaje = "Debe introducir al menos un código IATA.";
-                return View(vuelosPorRuta); 
+                return View();
             }
 
             try
@@ -79,6 +83,11 @@ namespace Obligatorio.Controllers
                     try
                     {
                         vuelo = Sistema.Instancia.GetVueloPorNumeroVuelo(numeroVuelo);
+
+                        if (vuelo == null)
+                        {
+                            ViewBag.Mensaje = "No se encontró el vuelo con ese número.";
+                        }
                     }
                     catch (Exception ex)
                     {

@@ -17,18 +17,22 @@ namespace Obligatorio.Controllers
         [HttpPost]
         public IActionResult RegistrarCliente(ClienteOcasional cliente)
         {
-            try
+            if (cliente != null)
             {
-                Sistema.Instancia.AltaClienteOcasional(cliente);
-                HttpContext.Session.SetString("rol", cliente.Rol);
-                HttpContext.Session.SetString("correo", cliente.Correo);
-                TempData["Mensaje"] = "Registro exitoso.";
-                return RedirectToAction("Index", "Home");
+                try
+                {
+                    Sistema.Instancia.AltaClienteOcasional(cliente);
+                    HttpContext.Session.SetString("rol", cliente.Rol);
+                    HttpContext.Session.SetString("correo", cliente.Correo);
+                    TempData["Mensaje"] = "Registro exitoso.";
+                    return RedirectToAction("Index", "Home");
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Mensaje = ex.Message;
+                }
             }
-            catch (Exception ex)
-            {
-                ViewBag.Mensaje = ex.Message;
-            }
+
             return View();
         }
 
@@ -75,7 +79,7 @@ namespace Obligatorio.Controllers
                     {
                         clientes = Sistema.Instancia.TodosLosClientes();
 
-                        if (clientes == null || clientes.Count() < 0)
+                        if (clientes == null || clientes.Count() == 0)
                         {
                             TempData["Mensaje"] = "No hay clientes en la lista.";
                             return View();
@@ -99,7 +103,7 @@ namespace Obligatorio.Controllers
         {
             if (HttpContext.Session.GetString("rol") != null)
             {
-                if (HttpContext.Session.GetString("rol") == "Cliente")
+                if (HttpContext.Session.GetString("rol") == "Admin")
                 {
                     Cliente cliente = null;
                     try
