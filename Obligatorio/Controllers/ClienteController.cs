@@ -5,6 +5,7 @@ namespace Obligatorio.Controllers
 {
     public class ClienteController : Controller
     {
+        //Anonimo: Registrar cliente ocasional
         public IActionResult RegistrarCliente()
         {
             if (HttpContext.Session.GetString("rol") == null)
@@ -36,6 +37,7 @@ namespace Obligatorio.Controllers
             return View();
         }
 
+        //Cliente: Ver perfil
         public IActionResult VerPerfil()
         {
             string correo = HttpContext.Session.GetString("correo");
@@ -67,6 +69,7 @@ namespace Obligatorio.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        //Admin: Ver todos los clientes
         public IActionResult VerTodosLosClientes()
         {
             if (HttpContext.Session.GetString("rol") != null)
@@ -99,6 +102,7 @@ namespace Obligatorio.Controllers
             return RedirectToAction("Login", "Home");
         }
 
+        //Admin: Editar cliente
         public IActionResult EditarCliente(string correo)
         {
             if (HttpContext.Session.GetString("rol") != null)
@@ -142,12 +146,19 @@ namespace Obligatorio.Controllers
                     return View();
                 }
 
+                //Cambiar elegibilidad
                 if (cliente is ClienteOcasional ocasional && !string.IsNullOrEmpty(ElegibleParaRegalo))
                 {
                     ocasional.CambiarElegibilidad(ElegibleParaRegalo);
                 }
+                //Cambiar puntos
                 else if (cliente is ClientePremium premium)
                 {
+                    if (Puntos <= 0)
+                    {
+                        TempData["Mensaje"] = "El campo de puntos no puede estar vacío y debe ser mayor a cero.";
+                        return RedirectToAction("EditarCliente", "Cliente", new { Correo = Correo, ElegibleParaRegalo = ElegibleParaRegalo, Puntos = Puntos});
+                    }
                     premium.ModificarPuntos(Puntos);
                 }
 

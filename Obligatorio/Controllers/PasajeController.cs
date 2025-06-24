@@ -39,6 +39,7 @@ namespace Obligatorio.Controllers
             return RedirectToAction("VerPasajes");
         }
 
+        //Cliente: Ver pasajes
         public IActionResult VerPasajes()
         {
             if (HttpContext.Session.GetString("rol") != null)

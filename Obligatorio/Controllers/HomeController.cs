@@ -11,11 +11,13 @@ namespace Obligatorio.Controllers
             if (HttpContext.Session.GetString("rol") != null)
             {
                 string correo = HttpContext.Session.GetString("correo");
+                //Muestra el correo en la página de inicio
                 return View(model: correo);
             }
             return View();
         }
 
+        //Anonimo: Login
         public IActionResult Login()
         {
             if (HttpContext.Session.GetString("rol") == null)
@@ -50,6 +52,7 @@ namespace Obligatorio.Controllers
             return View();
         }
 
+        //Usuario logeado: Logout
         public IActionResult Logout()
         {
             if (HttpContext.Session.GetString("rol") != null)

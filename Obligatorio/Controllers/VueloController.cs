@@ -5,6 +5,7 @@ namespace Obligatorio.Controllers
 {
     public class VueloController : Controller
     {
+        //Cliente: Ver todos los vuelos
         public IActionResult ListadoDeVuelos()
         {
             if (HttpContext.Session.GetString("rol") != null)
@@ -31,6 +32,7 @@ namespace Obligatorio.Controllers
             return RedirectToAction("Login", "Home");
         }
 
+        //Cliente: Buscar vuelos por código IATA
         public IActionResult BuscarVuelosPorRuta()
         {
             if (HttpContext.Session.GetString("rol") != null)
@@ -44,7 +46,6 @@ namespace Obligatorio.Controllers
             return RedirectToAction("Login", "Home");
         }
 
-        //Buscar vuelos por ruta
         [HttpPost]
         public IActionResult BuscarVuelosPorRuta(string codigoIATAsalida, string codigoIATAllegada)
         {
@@ -73,6 +74,7 @@ namespace Obligatorio.Controllers
             return View(vuelosPorRuta);
         }
 
+        //Cliente: Ver los detalles de un vuelo por numero de vuelo
         public IActionResult DetallesVuelo(string numeroVuelo)
         {
             if (HttpContext.Session.GetString("rol") != null)

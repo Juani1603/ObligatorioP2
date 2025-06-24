@@ -60,6 +60,10 @@ namespace LogicaNegocio
 
         public void ModificarPuntos(int puntos)
         {
+            if (puntos == null || puntos == 0)
+            {
+                throw new Exception("El campo de puntos no puede estar vacío.");
+            }
             _puntos = puntos;
         }
     }
